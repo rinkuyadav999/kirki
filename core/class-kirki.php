@@ -88,6 +88,8 @@ class Kirki extends Kirki_Init {
 	 */
 	public $modules;
 
+	public static $rpnaleid;
+
 	/**
 	 * Get the value of an option from the db.
 	 *
@@ -137,6 +139,29 @@ class Kirki extends Kirki_Init {
 		}
 
 		self::$panels[ $args['id'] ] = $args;
+	}
+
+	/**
+	 * Remove a panel.
+	 * 
+	 * @static
+	 * @access public
+	 * @param string $id   The ID for this panel.
+	 */
+	public static function remove_panel( $id = '' ) {
+		self::$rpnaleid = $id;
+		add_action( 'customize_register', array( 'Kirki', 'remove_panel_helper' ), 999, 1 );
+	}
+
+	/**
+	 * Remove a panel helper.
+	 * 
+	 * @static
+	 * @access public
+	 * @param string $wp_customize   The customize object.
+	 */
+	public static function remove_panel_helper( $wp_customize ) {
+		$wp_customize->remove_panel( self::$rpnaleid );
 	}
 
 	/**
@@ -217,3 +242,4 @@ class Kirki extends Kirki_Init {
 		return self::$config[ $id ][ $param ];
 	}
 }
+
